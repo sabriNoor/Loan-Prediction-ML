@@ -83,12 +83,14 @@ for name, model in models.items():
 print(f"\nBest model: {best_name} with accuracy: {best_score}")
 
 # create folder if not exists
-os.makedirs("models", exist_ok=True)
+models_path = os.path.join(BASE_DIR,"src" ,"models")
+
+os.makedirs(models_path, exist_ok=True)
 
 # save scaler
-joblib.dump(scaler, "models/scaler.pkl")
+joblib.dump(scaler, os.path.join(models_path, "scaler.pkl"))
 
 # save best model
-joblib.dump(best_model.model, "models/best_model.pkl")
+joblib.dump(best_model.model, os.path.join(models_path, "best_model.pkl"))
 
 print(f"Saved best model: {best_name}")
