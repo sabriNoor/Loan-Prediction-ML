@@ -21,12 +21,12 @@ for col in str_cols:
     print("Counts:")
     print(df[col].value_counts(dropna=False))            # include NaN count
 
-df = preprocess(df)
-
-print(df.isnull().sum())
-
-X = df.drop('Loan_Status', axis=1)
 y = df['Loan_Status'].map({'Y': 1, 'N': 0})
+X = df.drop('Loan_Status', axis=1)
+
+X = preprocess(X)
+print(X.isnull().sum())
+
 
 
 
