@@ -93,4 +93,6 @@ joblib.dump(scaler, os.path.join(models_path, "scaler.pkl"))
 # save best model
 joblib.dump(best_model.model, os.path.join(models_path, "best_model.pkl"))
 
+joblib.dump(X.columns, os.path.join(models_path, "columns.pkl"))
+
 print(f"Saved best model: {best_name}")
