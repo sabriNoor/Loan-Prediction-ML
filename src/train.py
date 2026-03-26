@@ -5,7 +5,7 @@ from sklearn.metrics import accuracy_score, classification_report
 from sklearn.preprocessing import StandardScaler
 
 from preprocess import preprocess
-from model import LoanModel
+from model import LogisticModel, RandomForestModel, SVMModel
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 data_path = os.path.join(BASE_DIR, "data", "train.csv")
@@ -51,20 +51,21 @@ X_test = scaler.transform(X_test)
 
 
 # -------------------
-# Model
+# Models
 # -------------------
-model = LoanModel()
-model.train(X_train, y_train)
+models = {
+    "logreg": LogisticModel(),
+    "rf": RandomForestModel(),
+    "svm": SVMModel()
+}
 
-# -------------------
-# Predict
-# -------------------
-y_pred = model.predict(X_test)
+for name, model in models.items():
+    # Train and predict
+    model.train(X_train, y_train)
+    pred = model.predict(X_test)
 
-# -------------------
-# Evaluate
-# -------------------
-print("Accuracy:", accuracy_score(y_test, y_pred))
-print(classification_report(y_test, y_pred))
-
+    # Evaluation
+    print(name)
+    print(accuracy_score(y_test, pred))
+    print(classification_report(y_test, pred))
 
