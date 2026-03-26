@@ -1,7 +1,10 @@
 import os
 import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score, classification_report
 
 from preprocess import preprocess
+from model import LoanModel
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 data_path = os.path.join(BASE_DIR, "data", "train.csv")
@@ -27,6 +30,32 @@ X = df.drop('Loan_Status', axis=1)
 X = preprocess(X)
 print(X.isnull().sum())
 
+# -------------------
+# Train/test split
+# -------------------
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y,
+    test_size=0.2,
+    random_state=42,
+    stratify=y
+)
 
+
+# -------------------
+# Model
+# -------------------
+model = LoanModel()
+model.train(X_train, y_train)
+
+# -------------------
+# Predict
+# -------------------
+y_pred = model.predict(X_test)
+
+# -------------------
+# Evaluate
+# -------------------
+print("Accuracy:", accuracy_score(y_test, y_pred))
+print(classification_report(y_test, y_pred))
 
 
