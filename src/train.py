@@ -2,6 +2,7 @@ import os
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, classification_report
+from sklearn.preprocessing import StandardScaler
 
 from preprocess import preprocess
 from model import LoanModel
@@ -29,6 +30,7 @@ X = df.drop('Loan_Status', axis=1)
 
 X = preprocess(X)
 print(X.isnull().sum())
+print(y.value_counts(normalize=True))
 
 # -------------------
 # Train/test split
@@ -39,6 +41,13 @@ X_train, X_test, y_train, y_test = train_test_split(
     random_state=42,
     stratify=y
 )
+
+# -------------------
+# Feature scaling
+# -------------------
+scaler = StandardScaler()
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.transform(X_test)
 
 
 # -------------------
