@@ -83,7 +83,7 @@ for name, model in models.items():
 print(f"\nBest model: {best_name} with accuracy: {best_score}")
 
 # create folder if not exists
-models_path = os.path.join(BASE_DIR,"src" ,"models")
+models_path = os.path.join(BASE_DIR, "models")
 
 os.makedirs(models_path, exist_ok=True)
 
