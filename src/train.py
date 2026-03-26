@@ -3,6 +3,7 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, classification_report
 from sklearn.preprocessing import StandardScaler
+import joblib
 
 from preprocess import preprocess
 from model import LogisticModel, RandomForestModel, SVMModel
@@ -58,6 +59,9 @@ models = {
     "rf": RandomForestModel(),
     "svm": SVMModel()
 }
+best_model = None
+best_score = 0
+best_name = ""
 
 for name, model in models.items():
     # Train and predict
@@ -69,3 +73,22 @@ for name, model in models.items():
     print(accuracy_score(y_test, pred))
     print(classification_report(y_test, pred))
 
+    # Update best model
+    acc = accuracy_score(y_test, pred)
+    if acc > best_score:
+        best_score = acc
+        best_model = model
+        best_name = name
+
+print(f"\nBest model: {best_name} with accuracy: {best_score}")
+
+# create folder if not exists
+os.makedirs("models", exist_ok=True)
+
+# save scaler
+joblib.dump(scaler, "models/scaler.pkl")
+
+# save best model
+joblib.dump(best_model.model, "models/best_model.pkl")
+
+print(f"Saved best model: {best_name}")
